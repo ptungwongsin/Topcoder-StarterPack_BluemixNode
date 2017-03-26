@@ -2,6 +2,7 @@
  * The application entry point
  */
 
+import path from 'path';
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
@@ -27,6 +28,7 @@ const apiRouter = new express.Router();
 loadRoutes(apiRouter, routes);
 
 app.use('/api', apiRouter);
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(errorHandler({
   log: ({err, req, body}) => {

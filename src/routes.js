@@ -3,6 +3,7 @@
  */
 
 import TestController from './controllers/TestController';
+import PersonalityInsightsConstroller from './controllers/PersonalityInsightsConstroller.js';
 
 export default {
   '/test': {
@@ -11,4 +12,10 @@ export default {
       public: true,
     },
   },
+  '/profile': {
+    get: {
+      method: PersonalityInsightsConstroller.getProfile,
+      public:true
+    }
+  }
 };

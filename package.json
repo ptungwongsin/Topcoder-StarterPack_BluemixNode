@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "engines": {
-   "node": "7"
+    "node": "7"
   },
   "scripts": {
     "lint": "eslint .",
@@ -83,13 +83,16 @@
     "config": "^1.24.0",
     "cors": "^2.8.1",
     "decorate-it": "^1.1.0",
+    "eslint-plugin-react": "^6.10.3",
     "express": "^4.14.0",
     "express-api-error-handler": "^1.0.1",
     "express-domain-middleware": "^0.1.0",
     "express-wrap-async": "^1.0.2",
     "http-errors": "^1.5.0",
     "joi": "^10.0.6",
-    "lodash": "^4.17.2"
+    "lodash": "^4.17.2",
+    "twitter": "^1.7.0",
+    "watson-developer-cloud": "^2.27.1"
   },
   "devDependencies": {
     "babel-eslint": "^7.1.1",
