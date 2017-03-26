@@ -8,9 +8,15 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 </head>
 <body>
-<label for="twitterHandle"></label><input id="twitterHandle" type="text" placeholder="Twitter handle" />
+<label for="twitterHandle">Twitter Handle: </label><input id="twitterHandle" type="text" placeholder="Twitter handle" />
 <button id="getInsightsButton">Get Insights</button>
 <textarea id="insights"></textarea>
+<select id="voices">
+    <option value="n/a">-- Please select a voice --</option>
+</select>
+<button id="listen">Listen</button>
+<textarea id="text"></textarea>
+<audio id="speaker"></audio>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
@@ -20,6 +26,22 @@
             $.get('/api/profile', { u: $('#twitterHandle').val() }, (data) => {
                 $('#insights').val(JSON.stringify(data, null, 4));
             });
+        });
+
+        $.get('/api/voices', (data) => {
+            var $voices = $('#voices');
+            data.voices.forEach((voice) => {
+                $voices.append('<option value="' + voice.name + '">' + voice.description + '</option>');
+            });
+        });
+
+        $('#listen').click(() => {
+            var voiceUrl = '/api/synthesize?' + $.param({ voice: $('#voices').val(), text: $('#text').val() });
+            var speaker = document.getElementById('speaker');
+            speaker.src = voiceUrl;
+            speaker.pause();
+            speaker.load();
+            speaker.oncanplaythrough = () => { speaker.play(); };
         });
     });
 </script>

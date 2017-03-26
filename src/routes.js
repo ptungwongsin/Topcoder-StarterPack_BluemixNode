@@ -3,7 +3,8 @@
  */
 
 import TestController from './controllers/TestController';
-import PersonalityInsightsConstroller from './controllers/PersonalityInsightsConstroller.js';
+import PersonalityInsightsConstroller from './controllers/PersonalityInsightsConstroller';
+import TextToSpeechController from './controllers/TextToSpeechController';
 
 export default {
   '/test': {
@@ -15,7 +16,19 @@ export default {
   '/profile': {
     get: {
       method: PersonalityInsightsConstroller.getProfile,
-      public:true
+      public: true
+    }
+  },
+  '/voices': {
+    get: {
+      method: TextToSpeechController.voices,
+      public: true
+    }
+  },
+  '/synthesize': {
+    get: {
+      method: TextToSpeechController.synthesize,
+      public: true
     }
   }
 };

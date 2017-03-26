@@ -2,4 +2,4 @@
 applications:
  - name: tc-cyberantz-03social
    random-route: true
-   memory: 256M
+   memory: 512M
