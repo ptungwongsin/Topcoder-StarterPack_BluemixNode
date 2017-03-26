@@ -1,30 +1,104 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>IBM Cognitive Fun Challence #3</title>
+<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IBM Cognitive Fun Challence #3</title>
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <!-- Optional theme -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <style type="text/css">
+        body {
+            min-height: 2000px;
+            padding-top: 70px;
+        }
+    </style>
 </head>
 <body>
-<label for="twitterHandle">Twitter Handle: </label><input id="twitterHandle" type="text" placeholder="Twitter handle" />
-<button id="getInsightsButton">Get Insights</button>
-<textarea id="insights"></textarea>
-<select id="voices">
-    <option value="n/a">-- Please select a voice --</option>
-</select>
-<button id="listen">Listen</button>
-<textarea id="text"></textarea>
-<audio id="speaker"></audio>
+<!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">IBM Cognitive Fun Challence #3</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active" data-target-row="personalityInsights"><a href="javascript:void(0)">Personality Insights</a></li>
+            <li data-target-row="textToSpeech"><a href="javascript:void(0)">Text to Speech</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container">
+        <div id="personalityInsights" class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="panel-body">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">@</span>
+                        <input id="twitterHandle" type="text" class="form-control" placeholder="Twitter handle" aria-describedby="basic-addon1">
+                        <span class="input-group-btn">
+                            <button id="getInsightsButton" class="btn btn-default" type="button">Get Insights</button>
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="insights" class="form-control hidden" rows="20" readonly="readonly"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="textToSpeech" class="row hidden">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="form-group">
+                    <label for="voices">Voice:</label>
+                    <select id="voices" class="form-control">
+                        <option value="n/a">-- Please select a voice --</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <input id="text" type="text" class="form-control" />
+                    <div class="input-group-btn">
+                        <button id="listen" class="btn btn-default" type="button">Listen</button>
+                    </div>
+                </div>
+                <audio id="speaker"></audio>
+            </div>
+        </div>
+    </div> <!-- /container -->
+
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <script type="text/javascript">
     $(document).ready(() => {
+        $('#navbar li').click((e) => {
+            var targetRow = $(e.currentTarget).data('targetRow');
+            $('#navbar li').removeClass('active');
+            $(e.currentTarget).addClass('active');
+
+            $('div.row').addClass('hidden');
+            $('div.row').each((index, elem) => {
+                if ($(elem).attr('id') === targetRow) {
+                    $(elem).removeClass('hidden');
+                } else {
+                    $(elem).addClass('hidden');
+                }
+            });
+        });
+
         $('#getInsightsButton').click(() => {
             $.get('/api/profile', { u: $('#twitterHandle').val() }, (data) => {
-                $('#insights').val(JSON.stringify(data, null, 4));
+                $('#insights')
+                        .removeClass('hidden')
+                        .text(JSON.stringify(data, null, 4));
             });
         });
 
