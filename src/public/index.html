@@ -116,9 +116,9 @@
             $('#loading').removeClass('hidden');
             $('#getInsightsButton').attr('disabled', true);
             $.get('/api/profile', { u: $('#twitterHandle').val() }, function (data) {
-                $('#personality').replaceWith(PercentileList.render(data.personality));
-                $('#needs').replaceWith(PercentileList.render(data.needs));
-                $('#values').replaceWith(PercentileList.render(data.values));
+                $('#personality').replaceWith(PercentileList.render(data.personality).attr('id', 'personality'));
+                $('#needs').replaceWith(PercentileList.render(data.needs).attr('id', 'needs'));
+                $('#values').replaceWith(PercentileList.render(data.values).attr('id', 'values'));
                 $('#loading').addClass('hidden');
                 $('#getInsightsButton').attr('disabled', false);
             });
