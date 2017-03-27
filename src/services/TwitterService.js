@@ -13,12 +13,12 @@ export default {
 
 function getTweets(user) {
     return new Promise((resolve, reject) => {
-        client.get('search/tweets', { q: 'from:' + user }, function(error, tweet, response) {
+        client.get('statuses/user_timeline', { screen_name: user, count: 200 }, function(error, tweets, response) {
             if (error) {
                 reject(error);
             } else {
                 var statusMessages = [];
-                tweet.statuses.forEach((status) => {
+                tweets.forEach((status) => {
                     statusMessages.push(status.text);
                 });
                 resolve(statusMessages);
