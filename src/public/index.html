@@ -105,17 +105,17 @@
 <script type="text/javascript" src="/js/PercentileList.js"></script>
 <script type="text/javascript" src="/js/TextToSpeech.js"></script>
 <script type="text/javascript">
-    $(document).ready(() => {
-        $('#twitterHandle').keydown((e) => {
+    $(document).ready(function () {
+        $('#twitterHandle').keydown(function (e) {
             if (e.which === 13 && !$('#getInsightsButton').attr('disabled')) {
                 $('#getInsightsButton').click();
             }
         });
 
-        $('#getInsightsButton').click(() => {
+        $('#getInsightsButton').click(function () {
             $('#loading').removeClass('hidden');
             $('#getInsightsButton').attr('disabled', true);
-            $.get('/api/profile', { u: $('#twitterHandle').val() }, (data) => {
+            $.get('/api/profile', { u: $('#twitterHandle').val() }, function (data) {
                 $('#personality').replaceWith(PercentileList.render(data.personality));
                 $('#needs').replaceWith(PercentileList.render(data.needs));
                 $('#values').replaceWith(PercentileList.render(data.values));
