@@ -67,16 +67,33 @@
                             <span class="input-group-addon" id="basic-addon1">@</span>
                             <input id="twitterHandle" type="text" class="form-control" placeholder="Twitter handle" aria-describedby="basic-addon1">
                             <span class="input-group-btn">
-                                <button id="getInsightsButton" class="btn btn-default" type="button">Get Insights</button>
+                                <button id="getInsightsButton" class="btn btn-default" type="button">Get Insights
+                                    <span id="loading" class="glyphicon glyphicon-refresh hidden" aria-hidden="true"></span>
+                                </button>
                             </span>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div id="personality" class="col-md-4"></div>
-                <div id="needs" class="col-md-4"></div>
-                <div id="values" class="col-md-4"></div>
+                <div class="col-md-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Personality</div>
+                        <ul id="personality"></ul>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Consumer Needs</div>
+                        <ul id="needs"></ul>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Values</div>
+                        <ul id="values"></ul>
+                    </div>
+                </div>
             </div>
         </div> <!-- /container -->
     </div>
@@ -90,16 +107,20 @@
 <script type="text/javascript">
     $(document).ready(() => {
         $('#twitterHandle').keydown((e) => {
-            if (e.which === 13) {
+            if (e.which === 13 && !$('#getInsightsButton').attr('disabled')) {
                 $('#getInsightsButton').click();
             }
         });
 
         $('#getInsightsButton').click(() => {
+            $('#loading').removeClass('hidden');
+            $('#getInsightsButton').attr('disabled', true);
             $.get('/api/profile', { u: $('#twitterHandle').val() }, (data) => {
-                $('#personality').empty().append(PercentileList.render(data.personality));
-                $('#needs').empty().append(PercentileList.render(data.needs));
-                $('#values').empty().append(PercentileList.render(data.values));
+                $('#personality').replaceWith(PercentileList.render(data.personality));
+                $('#needs').replaceWith(PercentileList.render(data.needs));
+                $('#values').replaceWith(PercentileList.render(data.values));
+                $('#loading').addClass('hidden');
+                $('#getInsightsButton').attr('disabled', false);
             });
         });
     });
